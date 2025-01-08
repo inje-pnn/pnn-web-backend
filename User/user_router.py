@@ -1,46 +1,43 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from user_schema import authRequest, UserCreateRequest, AddInfoRequest
-from core.database import get_db
-from user_crud import UserRepository
+from User.user_schema import authRequest, UserCreateRequest
+from core.database import provide_session
+from User.user_crud import UserRepository
 from handler.handler import create_access_token, oauth_google
-from fastapi.responses import JSONResponse
+from sqlalchemy.ext.asyncio import AsyncSession
 
-router = APIRouter(
+router = APIRouter( 
     prefix="/user",
     tags=["user"],
 )
 
 ###
 @router.post('/googlelogin')
-async def googlelogin(payload_oauth: authRequest, session: Session = Depends(get_db)):
+async def google_login(payload: authRequest, session: AsyncSession = Depends(provide_session)):
+    print("Authorization Code:", payload)  # Authorization Code 로그 출력
+    code = payload.code
+    
+    # Google OAuth에서 사용자 정보 가져오기
+    user_data = oauth_google(code)
     user_repo = UserRepository(session)
-    user_data = oauth_google(payload_oauth.code)
-    user = user_repo.get_user_by_email(user_data.email)
+    print(user_data)
+    # 사용자가 이미 존재하는 경우
+    user = await user_repo.get_user_by_email(user_data.email)
     if user:
-        return create_access_token(user_data.email)
-    else:
-        user_repo.create(
-            UserCreateRequest(
-                name=user_data.name,
-                email=user_data.email,
-                student_id="placeholder",  # 학번 초기값 설정
-                year=1,  # 기본 학년 설정
-                github_url=None,
-            )
-        )
-        return create_access_token(user_data.email)
+        user.token = create_access_token(user_data.email)
+        await session.commit()
+        return {"access_token": user.token}
 
-@router.post('/add-info')
-async def add_info(payload: AddInfoRequest, session: Session = Depends(get_db)):
-    user_repo = UserRepository(session)
-    user = user_repo.get_user_by_email(payload.email)
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found")
-    user_repo.update_user_info(
-        email=payload.email,
-        student_id=payload.student_id,
-        year=payload.year,
-        github_url=payload.github_url,
+    # 신규 사용자 등록
+    new_user = await user_repo.create(
+        UserCreateRequest(
+            name=user_data.name,
+            email=user_data.email,
+            student_number="placeholder",
+            student_grade=0,
+            github_url=None,
+        )
     )
-    return {"message": "User info updated successfully"}
+    new_user.token = create_access_token(new_user.email)
+    await session.commit()
+    return {"access_token": new_user.token}

@@ -5,11 +5,10 @@ from pydantic_settings import BaseSettings
 
 class DefaultConfig(BaseSettings):
     postgresql_endpoint: str = os.getenv("POSTGRESQL_ENDPOINT", "svc.sel4.cloudtype.app")
-    postgresql_port: int = os.getenv("POSTGRESQL_PORT", "32700")
-    postgresql_table: str = os.getenv("POSTGRESQL_TABLE", "reaction_db")
+    postgresql_port: int = os.getenv("POSTGRESQL_PORT", "32497")
+    postgresql_table: str = os.getenv("POSTGRESQL_TABLE", "root")
     postgresql_user: str = os.getenv("POSTGRESQL_USER", "root")
-    postgresql_password: str = os.getenv("POSTGRESQL_PASSWORD", "3321")
-    redis_url: str = os.getenv("REDIS_URL", "redis://localhost:6379/0")
+    postgresql_password: str = os.getenv("POSTGRESQL_PASSWORD", "PNN**")
 
     jwt_secret_key: str = os.getenv(
         "JWT_SECRET_KEY",
@@ -20,4 +19,4 @@ class DefaultConfig(BaseSettings):
 
 @lru_cache
 def get_config():
-    return DefaultConfig()
+    return DefaultConfig()  
