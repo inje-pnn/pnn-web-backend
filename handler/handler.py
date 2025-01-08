@@ -1,4 +1,4 @@
-###
+#https://accounts.google.com/o/oauth2/v2/auth?client_id=30161074278-idj5eof64nb5hv3tfat6btggtb7lei4c.apps.googleusercontent.com&redirect_uri=http://localhost:8000/user/googlelogin&response_type=code&scope=email%20profile
 import requests
 from User.user_schema import SocialMember
 import jwt
