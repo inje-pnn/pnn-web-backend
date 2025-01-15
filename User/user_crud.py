@@ -1,8 +1,6 @@
 ###
-from sqlalchemy.orm import Session
 from sqlalchemy.future import select
 from core.model import UserModel
-from fastapi import HTTPException
 from typing import Optional
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -26,12 +24,4 @@ class UserRepository:
         stmt = select(UserModel).where(UserModel.email == email)
         result = await self.session.execute(stmt)
         return result.scalars().first()  # ORM 객체 반환
-
-    def update_user_info(self, email: str, student_number: str, student_grade: int, github_url: Optional[str] = None):
-        user = self.get_user_by_email(email)
-        if user:
-            user.student_number = student_number
-            user.student_grade = student_grade
-            user.github_url = github_url
-            self.session.commit()
 

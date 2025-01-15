@@ -1,9 +1,7 @@
-from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session
-from User.user_schema import authRequest, UserCreateRequest
+from fastapi import APIRouter, Depends
+from User.user_schema import FirebaseAuthRequest, UserCreateRequest
 from core.database import provide_session
 from User.user_crud import UserRepository
-from handler.handler import create_access_token, oauth_google
 from sqlalchemy.ext.asyncio import AsyncSession
 
 router = APIRouter( 
@@ -12,32 +10,45 @@ router = APIRouter(
 )
 
 ###
-@router.post('/googlelogin')
-async def google_login(payload: authRequest, session: AsyncSession = Depends(provide_session)):
-    print("Authorization Code:", payload)  # Authorization Code 로그 출력
-    code = payload.code
-    
-    # Google OAuth에서 사용자 정보 가져오기
-    user_data = oauth_google(code)
+@router.post('/login')
+async def login_user(payload: FirebaseAuthRequest, session: AsyncSession = Depends(provide_session)):
+    email = payload.email
     user_repo = UserRepository(session)
-    print(user_data)
-    # 사용자가 이미 존재하는 경우
-    user = await user_repo.get_user_by_email(user_data.email)
-    if user:
-        user.token = create_access_token(user_data.email)
-        await session.commit()
-        return {"access_token": user.token}
 
-    # 신규 사용자 등록
+    # 사용자 확인
+    user = await user_repo.get_user_by_email(email)
+    if user:
+        return {
+            "id": user.id,
+            "email": user.email,
+            "name": user.name,
+            "student_number": user.student_number,
+            "student_grade": user.student_grade,
+            "github_url": user.github_url
+        }
+
+    # 기본값 설정
+    name = payload.name or "user"
+    student_number = payload.student_number or "0"
+    student_grade = payload.student_grade or 0
+    github_url = payload.github_url or "https://github.com"
+
+    # 사용자 추가
     new_user = await user_repo.create(
         UserCreateRequest(
-            name=user_data.name,
-            email=user_data.email,
-            student_number="placeholder",
-            student_grade=0,
-            github_url=None,
+            name=name,
+            email=email,
+            student_number=student_number,
+            student_grade=student_grade,
+            github_url=github_url,
         )
     )
-    new_user.token = create_access_token(new_user.email)
-    await session.commit()
-    return {"access_token": new_user.token}
+
+    return {
+        "id": new_user.id,
+        "email": new_user.email,
+        "name": new_user.name,
+        "student_number": new_user.student_number,
+        "student_grade": new_user.student_grade,
+        "github_url": new_user.github_url
+    }

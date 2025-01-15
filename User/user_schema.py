@@ -2,9 +2,6 @@
 from pydantic import BaseModel, EmailStr
 from typing import Optional
 
-class authRequest(BaseModel):
-    code: str
-
 class UserCreateRequest(BaseModel):
     email: EmailStr
     student_number: str
@@ -12,8 +9,9 @@ class UserCreateRequest(BaseModel):
     name: str
     github_url: Optional[str] = None
 
-class SocialMember(BaseModel):
-    id: Optional[str]
+class FirebaseAuthRequest(BaseModel):
     email: EmailStr
-    name: str
-    verified_email: Optional[bool]
+    name: Optional[str] = None
+    student_number: Optional[str] = None
+    student_grade: Optional[int] = None
+    github_url: Optional[str] = None
