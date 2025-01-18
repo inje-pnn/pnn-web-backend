@@ -1,36 +1,27 @@
 ###
-from sqlalchemy.orm import Session
-from core.model import UserModel  # 데이터베이스 모델로 변경
-from fastapi import HTTPException
+from sqlalchemy.future import select
+from core.model import UserModel
 from typing import Optional
+from sqlalchemy.ext.asyncio import AsyncSession
 
 class UserRepository:
-    def __init__(self, session: Session):
+    def __init__(self, session: AsyncSession):
         self.session = session
 
-    def create(self, payload):
-        if self.get_user_by_email(payload.email):
-            raise HTTPException(status_code=400, detail="Email already registered")
-
-        db_user = UserModel(
-            name=payload.name,
-            email=payload.email,
-            student_id=payload.student_id,
-            year=payload.year,
-            github_url=payload.github_url,
+    async def create(self, user_create_request):
+        new_user = UserModel(
+            name=user_create_request.name,
+            email=user_create_request.email,
+            student_number=user_create_request.student_number,
+            student_grade=user_create_request.student_grade,
+            github_url=user_create_request.github_url,
         )
-        self.session.add(db_user)
-        self.session.commit()
-        return payload.email
+        self.session.add(new_user)
+        await self.session.commit()
+        return new_user
 
-    def get_user_by_email(self, email: str) -> Optional[UserModel]:
-        return self.session.query(UserModel).filter(UserModel.email == email).first()
-
-    def update_user_info(self, email: str, student_id: str, year: int, github_url: Optional[str] = None):
-        user = self.get_user_by_email(email)
-        if user:
-            user.student_id = student_id
-            user.year = year
-            user.github_url = github_url
-            self.session.commit()
+    async def get_user_by_email(self, email: str):
+        stmt = select(UserModel).where(UserModel.email == email)
+        result = await self.session.execute(stmt)
+        return result.scalars().first()  # ORM 객체 반환
 

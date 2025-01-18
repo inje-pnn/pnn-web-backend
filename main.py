@@ -1,3 +1,4 @@
+#uvicorn main:app --reload
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from User.user_router import router as user_router
