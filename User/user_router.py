@@ -1,10 +1,12 @@
 from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Session
-from User.user_schema import authRequest, UserCreateRequest, AddInfoRequest
-from core.database import get_db
+from User.user_schema import FirebaseAuthRequest, UserCreateRequest, authRequest, AddInfoRequest
+from core.database import provide_session, get_db
 from User.user_crud import UserRepository
 from handler.handler import create_access_token, oauth_google
 from fastapi.responses import JSONResponse
+
 
 router = APIRouter(
     prefix="/user",
