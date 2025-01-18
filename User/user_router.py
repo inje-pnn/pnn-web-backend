@@ -28,10 +28,10 @@ async def login_user(payload: FirebaseAuthRequest, session: AsyncSession = Depen
         }
 
     # 기본값 설정
-    name = payload.name or "user"
-    student_number = payload.student_number or "0"
-    student_grade = payload.student_grade or 0
-    github_url = payload.github_url or "https://github.com"
+    name = "user"
+    student_number = "0"
+    student_grade = 0
+    github_url = "https://github.com"
 
     # 사용자 추가
     new_user = await user_repo.create(

@@ -12,7 +12,3 @@ class UserCreateRequest(BaseModel):
 
 class FirebaseAuthRequest(BaseModel):
     email: EmailStr
-    name: Optional[str] = None
-    student_number: Optional[str] = None
-    student_grade: Optional[int] = None
-    github_url: Optional[str] = None
