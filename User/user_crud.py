@@ -1,7 +1,6 @@
 ###
 from sqlalchemy.future import select
 from core.model import UserModel
-from typing import Optional
 from sqlalchemy.ext.asyncio import AsyncSession
 
 class UserRepository:
