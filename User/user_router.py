@@ -1,15 +1,17 @@
-from fastapi import APIRouter, Depends
-from User.user_schema import FirebaseAuthRequest, UserCreateRequest
-from core.database import provide_session
-from User.user_crud import UserRepository
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import Session
+from User.user_schema import FirebaseAuthRequest, UserCreateRequest, authRequest, AddInfoRequest
+from core.database import provide_session, get_db
+from User.user_crud import UserRepository
+from handler.handler import create_access_token, oauth_google
+from fastapi.responses import JSONResponse
 
-router = APIRouter( 
+router = APIRouter(
     prefix="/user",
     tags=["user"],
 )
 
-###
 @router.post('/login')
 async def login_user(payload: FirebaseAuthRequest, session: AsyncSession = Depends(provide_session)):
     email = payload.email
