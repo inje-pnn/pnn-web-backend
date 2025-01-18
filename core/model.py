@@ -11,3 +11,4 @@ class UserModel(Base):
     student_grade = Column(Integer, nullable=True)
     name = Column(String(255), nullable=True)
     github_url = Column(String(255), nullable=True)
+    authority = Column(Integer, nullable=False, default=3)
