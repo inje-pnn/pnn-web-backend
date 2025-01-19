@@ -1,27 +1,27 @@
 from fastapi import APIRouter,Depends
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.database import provide_session
 from project.project_crud import ProjectCrud
 from project.project_schema import ProjcetDTO, TypeDTO
 
-projcetrouter = APIRouter(
+project_router = APIRouter(
     prefix="/projcet",
     tags=["project"],
 )
 
-@projcetrouter.post("/create")
-def create_project(payload: ProjcetDTO, session:Session=Depends(provide_session)):
+@project_router.post("/create")
+async def create_project(payload: ProjcetDTO, session:AsyncSession=Depends(provide_session)):
     
     crud=ProjectCrud(session)
-    return crud.create(payload)
+    return await crud.create(payload)
 
-@projcetrouter.post("/get")
-def get_projcet(session:Session=Depends(provide_session)):
+@project_router.post("/get")
+async def get_projcet(session:AsyncSession=Depends(provide_session)):
     crud=ProjectCrud(session)
     return crud.get()
 
-@projcetrouter.post("/getbytype")
-def get_projcet_by_type(payload: TypeDTO,session:Session=Depends(provide_session)):
+@project_router.post("/getbytype")
+async def get_projcet_by_type(payload: TypeDTO,session:AsyncSession=Depends(provide_session)):
     crud=ProjectCrud(session)
     return crud.get_by_type(payload)

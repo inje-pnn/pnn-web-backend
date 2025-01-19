@@ -3,6 +3,7 @@ from pydantic import BaseModel
 class ProjcetDTO(BaseModel):
     memberid: str
     title: str
+    sub_title : str
     postdate : str
     project_type : str
     link : str
