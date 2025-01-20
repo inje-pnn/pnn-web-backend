@@ -1,8 +1,6 @@
-from fastapi import HTTPException
-from sqlalchemy import desc
+from sqlalchemy import desc, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from core.model import ProjectModel
-from project.project_schema import ProjcetDTO
 
 class ProjectCrud:
     def __init__(self, session:AsyncSession):
@@ -28,19 +26,28 @@ class ProjectCrud:
 
     async def get(self):
         
-        query = self.session.query(ProjectModel).order_by(desc(ProjectModel.postdate)).all()
         
-        result = await self.session.execute(query)
-        
-        return result
+        async with self.session as session:  # 비동기 세션 사용
+            # 비동기 쿼리 작성
+            query = select(ProjectModel).order_by(ProjectModel.postdate.desc())
+            
+            # 쿼리 실행
+            result = await session.execute(query)
+            
+            # 결과 추출
+            projects = result.scalars().all()
+            
+        return projects
     
 
     async def get_by_type(self, payload):
-        query = self.session.query(ProjectModel).filter(
+        query = select(ProjectModel).filter(
             ProjectModel.project_type == payload.project_type).order_by(desc(
-            ProjectModel.postdate)).all()
+            ProjectModel.postdate))
         
         result = await self.session.execute(query)
+
+        projects = result.scalars().all()
         
-        return result
+        return projects
     
