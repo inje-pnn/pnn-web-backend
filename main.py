@@ -1,3 +1,4 @@
+#uvicorn main:app --reload
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from User.user_router import router as user_router
@@ -20,7 +21,7 @@ for router in routers:
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # 허용할 출처(이후에 수정할 예정)
+    allow_origins=["http://localhost:5173","http://localhost:3000"],  # 허용할 출처(이후에 수정할 예정)
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

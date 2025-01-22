@@ -61,3 +61,12 @@ async def provide_session():
         await session.commit()
     finally:
         await session.close()
+
+###
+def get_db():
+    db = None
+    try:
+        db = DBSessionLocal()
+        yield db
+    finally:
+        db.close()

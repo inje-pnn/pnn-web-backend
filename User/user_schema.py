@@ -1,5 +1,14 @@
-from pydantic import BaseModel
+###
+from pydantic import BaseModel, EmailStr
+from typing import Optional
 
-class ExampleDTO(BaseModel):
+class UserCreateRequest(BaseModel):
+    email: EmailStr
+    student_number: str
+    student_grade: int
     name: str
-    age: int
+    github_url: Optional[str] = None
+    authority: Optional[int] = 3
+
+class FirebaseAuthRequest(BaseModel):
+    email: EmailStr

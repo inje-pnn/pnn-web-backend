@@ -9,7 +9,6 @@ class DefaultConfig(BaseSettings):
     postgresql_table: str = os.getenv("POSTGRESQL_TABLE", "root")
     postgresql_user: str = os.getenv("POSTGRESQL_USER", "root")
     postgresql_password: str = os.getenv("POSTGRESQL_PASSWORD", "PNN**")
-    redis_url: str = os.getenv("REDIS_URL", "redis://localhost:6379/0")
 
     jwt_secret_key: str = os.getenv(
         "JWT_SECRET_KEY",
@@ -20,4 +19,4 @@ class DefaultConfig(BaseSettings):
 
 @lru_cache
 def get_config():
-    return DefaultConfig()
+    return DefaultConfig()  
