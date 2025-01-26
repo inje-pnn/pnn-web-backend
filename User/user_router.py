@@ -44,7 +44,7 @@ async def login_user(payload: FirebaseAuthRequest, session: AsyncSession = Depen
             student_number=student_number,
             student_grade=student_grade,
             github_url=github_url,
-            authority=3,
+            authority=2,
         )
     )
 

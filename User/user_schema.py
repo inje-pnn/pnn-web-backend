@@ -8,7 +8,7 @@ class UserCreateRequest(BaseModel):
     student_grade: int
     name: str
     github_url: Optional[str] = None
-    authority: Optional[int] = 3
+    authority: Optional[int] = 2
 
 class FirebaseAuthRequest(BaseModel):
     email: EmailStr

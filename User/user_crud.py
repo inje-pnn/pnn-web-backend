@@ -14,7 +14,7 @@ class UserRepository:
             student_number=user_create_request.student_number,
             student_grade=user_create_request.student_grade,
             github_url=user_create_request.github_url,
-            authority=user_create_request.authority or 3
+            authority=user_create_request.authority or 2
         )
         self.session.add(new_user)
         await self.session.commit()
