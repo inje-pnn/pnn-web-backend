@@ -4,10 +4,9 @@ class ProjcetDTO(BaseModel):
     memberid: str
     title: str
     sub_title : str
-    postdate : str
     project_type : str
+    project_category : str
     link : str
-    add_content : str
     image : str
 
 

@@ -6,7 +6,7 @@ from project.project_crud import ProjectCrud
 from project.project_schema import ProjcetDTO, TypeDTO
 
 project_router = APIRouter(
-    prefix="/projcet",
+    prefix="/project",
     tags=["project"],
 )
 
