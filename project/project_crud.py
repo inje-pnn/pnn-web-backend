@@ -13,10 +13,9 @@ class ProjectCrud:
             memberid=payload.memberid,
             title=payload.title,
             sub_title=payload.sub_title,
-            postdate=payload.postdate,
             project_type=payload.project_type,
+            project_category=payload.project_category,
             link=payload.link,
-            add_content=payload.add_content,
             image=payload.image
         )
         self.session.add(db_project)
@@ -29,7 +28,7 @@ class ProjectCrud:
         
         async with self.session as session:  # 비동기 세션 사용
             # 비동기 쿼리 작성
-            query = select(ProjectModel).order_by(ProjectModel.postdate.desc())
+            query = select(ProjectModel).order_by(ProjectModel.id.desc())
             
             # 쿼리 실행
             result = await session.execute(query)
@@ -43,7 +42,7 @@ class ProjectCrud:
     async def get_by_type(self, payload):
         query = select(ProjectModel).filter(
             ProjectModel.project_type == payload.project_type).order_by(desc(
-            ProjectModel.postdate))
+            ProjectModel.id))
         
         result = await self.session.execute(query)
 

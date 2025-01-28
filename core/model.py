@@ -24,10 +24,9 @@ class ProjectModel(Base):
     memberid = Column(String(255), ForeignKey("users.email", ondelete="CASCADE"), nullable=False)  # 외래 키 (users.email)
     title = Column(String(255), nullable=False)              # 프로젝트 제목
     sub_title = Column(String(255), nullable=False)          # 서브타이틀
-    postdate = Column(String(255), nullable=False)           # 프로젝트 게시 날짜
     project_type = Column(String(50), nullable=False)        # 프로젝트 타입
+    project_category = Column(String(50), nullable=False)     # 프로젝트 유형형
     link = Column(String(2083), nullable=True)               # 프로젝트 링크
-    add_content = Column(String(50), nullable=True)          # 추가 설명
     image = Column(String(2083), nullable=True)              # 이미지 주소
     
     # 관계 설정 (users 테이블과 연계)
