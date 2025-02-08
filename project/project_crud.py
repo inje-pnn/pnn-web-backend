@@ -15,6 +15,7 @@ class ProjectCrud:
             sub_title=payload.sub_title,
             project_type=payload.project_type,
             project_category=payload.project_category,
+            project_tag = payload.project_tag,
             link=payload.link,
             image=payload.image
         )
@@ -36,17 +37,5 @@ class ProjectCrud:
             # 결과 추출
             projects = result.scalars().all()
             
-        return projects
-    
-
-    async def get_by_type(self, payload):
-        query = select(ProjectModel).filter(
-            ProjectModel.project_type == payload.project_type).order_by(desc(
-            ProjectModel.id))
-        
-        result = await self.session.execute(query)
-
-        projects = result.scalars().all()
-        
         return projects
     

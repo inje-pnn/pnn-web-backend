@@ -6,6 +6,7 @@ class ProjcetDTO(BaseModel):
     sub_title : str
     project_type : str
     project_category : str
+    project_tag : str
     link : str
     image : str
 
