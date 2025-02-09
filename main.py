@@ -21,7 +21,7 @@ for router in routers:
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173","http://localhost:3000"],  # 허용할 출처(이후에 수정할 예정)
+    allow_origins=["http://localhost:5173","http://localhost:3000","https://pnn-web-4bad4.web.app"],  # 허용할 출처(이후에 수정할 예정)
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
