@@ -1,4 +1,4 @@
-from sqlalchemy import Column, ForeignKey, String, Integer
+from sqlalchemy import JSON, Column, ForeignKey, String, Integer
 from core.database import Base
 from sqlalchemy.orm import relationship
 
@@ -24,7 +24,7 @@ class ProjectModel(Base):
     memberid = Column(String(255), ForeignKey("users.email", ondelete="CASCADE"), nullable=False)  # 외래 키 (users.email)
     title = Column(String(255), nullable=False)              # 프로젝트 제목
     sub_title = Column(String(255), nullable=False)          # 서브타이틀
-    project_type = Column(String(50), nullable=False)        # 프로젝트 타입
+    project_type = Column(JSON)                             
     project_category = Column(String(50), nullable=False)     # 프로젝트 유형
     project_tag = Column(String(50), nullable=False)         # 프로젝트 태그
     link = Column(String(2083), nullable=True)               # 프로젝트 링크

@@ -1,10 +1,11 @@
+from typing import List
 from pydantic import BaseModel
 
-class ProjcetDTO(BaseModel):
+class ProjectDTO(BaseModel):
     memberid: str
     title: str
     sub_title : str
-    project_type : str
+    project_type : List[str]
     project_category : str
     project_tag : str
     link : str

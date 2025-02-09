@@ -16,7 +16,7 @@ async def create_project(payload: ProjcetDTO, session:AsyncSession=Depends(provi
     crud=ProjectCrud(session)
     return await crud.create(payload)
 
-@project_router.post("/get")
-async def get_projcet(session:AsyncSession=Depends(provide_session)):
+@project_router.get("/get")
+async def get_project(session:AsyncSession=Depends(provide_session)):
     crud=ProjectCrud(session)
     return await crud.get()
