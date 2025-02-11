@@ -2,14 +2,15 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from User.user_router import router as user_router
+from Post.post_router import router as post_router
 from project.project_router import project_router
-
 from core.database import init_db
 from core.config import get_config
 
 routers = []
 routers.append(user_router)
 routers.append(project_router)
+routers.append(post_router)
 app = FastAPI(
     openapi_url="/openapi.json",
     docs_url="/docs",

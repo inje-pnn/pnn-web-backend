@@ -1,6 +1,7 @@
-from sqlalchemy import JSON, Column, ForeignKey, String, Integer
+from sqlalchemy import JSON, Column, ForeignKey, String, Integer, Text, DateTime
 from core.database import Base
 from sqlalchemy.orm import relationship
+from datetime import datetime
 
 
 class UserModel(Base):
@@ -32,3 +33,22 @@ class ProjectModel(Base):
     
     # 관계 설정 (users 테이블과 연계)
     user = relationship("UserModel", back_populates="project")
+
+class StudyPostModel(Base):
+    __tablename__ = "studyboard"
+
+    serial_number = Column(Integer, primary_key=True, autoincrement=True)
+    title = Column(String(255), nullable=False)
+    user_id = Column(String(255), nullable=False)
+    type = Column(String(50), nullable=True)
+    content_link = Column(Text, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+class AccountShareModel(Base):
+    __tablename__ = "accountshareboard"
+
+    serial_number = Column(Integer, primary_key=True, autoincrement=True)
+    account_id  = Column(String(100), nullable=False)
+    account_password  = Column(String(100), nullable=False)
+    sharer = Column(String(255), nullable=False)
+    username = Column(String(100))
