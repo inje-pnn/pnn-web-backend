@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
-from core.models import AccountShareModel
+from core.model import AccountShareModel
 from core.database import provide_session
 from sqlalchemy.ext.asyncio import AsyncSession
 from .post_schema import studyPostDTO, AccountPostDTO
