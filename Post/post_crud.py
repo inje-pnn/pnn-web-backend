@@ -1,6 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from .post_schema import studyPostDTO, AccountPostDTO
-from core.models import StudyPostModel, AccountShareModel
+from core.model import StudyPostModel, AccountShareModel
 from sqlalchemy.future import select
 
 class studyPostCRUD:
