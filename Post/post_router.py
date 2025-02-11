@@ -2,8 +2,8 @@ from fastapi import APIRouter, Depends, HTTPException
 from core.model import AccountShareModel
 from core.database import provide_session
 from sqlalchemy.ext.asyncio import AsyncSession
-from .post_schema import studyPostDTO, AccountPostDTO
-from .post_crud import studyPostCRUD, AccountPostCRUD
+from Post.post_schema import studyPostDTO, AccountPostDTO
+from Post.post_crud import studyPostCRUD, AccountPostCRUD
 from sqlalchemy.future import select
 
 router = APIRouter(
