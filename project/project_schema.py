@@ -8,6 +8,7 @@ class ProjectDTO(BaseModel):
     project_type : List[str]
     project_category : str
     project_tag : str
+    create_data : str
     link : str
     image : str
 

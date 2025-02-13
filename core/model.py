@@ -28,6 +28,7 @@ class ProjectModel(Base):
     project_type = Column(JSON)                             
     project_category = Column(String(50), nullable=False)     # 프로젝트 유형
     project_tag = Column(String(50), nullable=False)         # 프로젝트 태그
+    create_data = Column(String(50), nullable=False)
     link = Column(String(2083), nullable=True)               # 프로젝트 링크
     image = Column(String(2083), nullable=True)              # 이미지 주소
     
