@@ -1,11 +1,14 @@
 from pydantic import BaseModel
+from typing import List
 
 class studyPostDTO(BaseModel):
     
     title: str
-    user_id: str
-    type: str
+    email: str
+    project_type : List[str]
+    project_category: str
     content_link: str
+    description: str
 
 class AccountPostDTO(BaseModel):
 

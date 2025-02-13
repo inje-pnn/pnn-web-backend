@@ -1,6 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from .post_schema import studyPostDTO, AccountPostDTO
-from core.models import StudyPostModel, AccountShareModel
+from Post.post_schema import studyPostDTO, AccountPostDTO
+from core.model import StudyPostModel, AccountShareModel
 from sqlalchemy.future import select
 
 class studyPostCRUD:
@@ -8,10 +8,13 @@ class studyPostCRUD:
         self._session = session
 
     async def create_studyboard(self,*,payload:studyPostDTO):
+
         new_post = StudyPostModel(title=payload.title, 
-                             user_id=payload.user_id,
-                             type=payload.type,
+                             email=payload.email,
+                             project_type =payload.project_type,
+                             project_category =payload.project_category,
                              content_link=payload.content_link,
+                             description=payload.description
                              )
         self._session.add(new_post)
         await self._session.commit()
@@ -21,12 +24,12 @@ class studyPostCRUD:
         list = await self._session.execute(select(StudyPostModel))
         return list.scalars().all()
 
-    async def get_studyboard_by_id(self, post_id: int):
-        result = await self._session.execute(select(StudyPostModel).filter(StudyPostModel.serial_number == post_id))
+    async def get_studyboard_by_serial_number(self, serial_number: int):
+        result = await self._session.execute(select(StudyPostModel).filter(StudyPostModel.serial_number == serial_number))
         return result.scalar_one_or_none()
 
-    async def delete_studyboard(self, post_id: int):
-        result = await self._session.execute(select(StudyPostModel).filter(StudyPostModel.serial_number == post_id))
+    async def delete_studyboard(self, serial_number: int):
+        result = await self._session.execute(select(StudyPostModel).filter(StudyPostModel.serial_number == serial_number))
         post = result.scalar_one_or_none()
         if post:
             await self._session.delete(post)
@@ -50,12 +53,12 @@ class AccountPostCRUD:
         list = await self._session.execute(select(AccountShareModel))
         return list.scalars().all()
 
-    async def get_accountboard_by_id(self, post_id: int):
-        result = await self._session.execute(select(AccountShareModel).filter(AccountShareModel.serial_number == post_id))
+    async def get_accountboard_by_serial_number(self, serial_number: int):
+        result = await self._session.execute(select(AccountShareModel).filter(AccountShareModel.serial_number == serial_number))
         return result.scalar_one_or_none()
 
-    async def delete_accountboard(self, post_id: int):
-        result = await self._session.execute(select(AccountShareModel).filter(AccountShareModel.serial_number == post_id))
+    async def delete_accountboard(self, serial_number: int):
+        result = await self._session.execute(select(AccountShareModel).filter(AccountShareModel.serial_number == serial_number))
         post = result.scalar_one_or_none()
         if post:
             await self._session.delete(post)

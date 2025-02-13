@@ -23,6 +23,7 @@ class UserRepository:
     async def get_user_by_email(self, email: str):
         stmt = select(UserModel).where(UserModel.email == email)
         result = await self.session.execute(stmt)
+       
         return result.scalars().first()
 
     async def update_authority(self, user_id: int, new_authority: int):
