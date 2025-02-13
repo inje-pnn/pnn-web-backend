@@ -16,6 +16,7 @@ class ProjectCrud:
             project_type=payload.project_type,
             project_category=payload.project_category,
             project_tag = payload.project_tag,
+            create_data = payload.create_data,
             link=payload.link,
             image=payload.image
         )
