@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from core.database import provide_session
 from sqlalchemy.ext.asyncio import AsyncSession
 from User.user_crud import UserRepository
-from Post.post_schema import studyPostDTO, AccountPostDTO
+from Post.post_schema import studyPostDTO, AccountPostDTO, updateDTO
 from Post.post_crud import studyPostCRUD, AccountPostCRUD
 
 router = APIRouter(
@@ -17,9 +17,10 @@ async def post_studyboard(PDTO: studyPostDTO, db: AsyncSession = Depends(provide
 
     if user is None:
         return {"message" : "email이 존재하지 않습니다."}
-    
+    username = user.name
+
     crud = studyPostCRUD(db)
-    post = await crud.create_studyboard(payload=PDTO)
+    post = await crud.create_studyboard(username = username, payload=PDTO)
     return post
 
 @router.get("/get_studyboardlist")
@@ -43,23 +44,24 @@ async def delete_studyboard(serial_number: int, db: AsyncSession = Depends(provi
 async def post_Accountboard(ADTO: AccountPostDTO, db: AsyncSession = Depends(provide_session)):
     UserCrud = UserRepository(db)
     user = await UserCrud.get_user_by_email(ADTO.sharer)
+    username = user.name
 
     if user is None:
         return {"message" : "email이 존재하지 않습니다."}
     else:
         crud = AccountPostCRUD(db)
-        post = await crud.create_Accountboard(payload=ADTO)
+        post = await crud.create_Accountboard(sharername=username, payload=ADTO)
         return post
     
 
-@router.get("get_accountboardlist")
-async def get_studyboardlist(db: AsyncSession = Depends(provide_session)):
+@router.get("/get_accountboardlist")
+async def get_accountboard(db: AsyncSession = Depends(provide_session)):
     crud = AccountPostCRUD(db)
     accountboards = await crud.get_list_accountboard()
     return accountboards
 
 @router.delete("/delete_accountboard/{serial_number}")
-async def delete_studyboard(serial_number: int, db: AsyncSession = Depends(provide_session)):
+async def delete_accountboard(serial_number: int, db: AsyncSession = Depends(provide_session)):
     crud = AccountPostCRUD(db)
 
     post = await crud.get_accountboard_by_serial_number(serial_number)
@@ -68,3 +70,13 @@ async def delete_studyboard(serial_number: int, db: AsyncSession = Depends(provi
     
     await crud.delete_accountboard(serial_number)
     return {"message": "Post deleted successfully"}
+
+@router.post("/update_accountboard")
+async def update_accountboard(UDTO: updateDTO, db: AsyncSession = Depends(provide_session)):
+    crud = AccountPostCRUD(db)
+    
+    post = await crud.update_accountboard(UDTO.username, UDTO.serial_number)
+    if not post:
+        raise HTTPException(status_code=404, detail="Post not found")
+    
+    return post

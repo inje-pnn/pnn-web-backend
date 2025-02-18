@@ -41,9 +41,11 @@ class StudyPostModel(Base):
     serial_number = Column(Integer, primary_key=True, autoincrement=True)
     title = Column(String(255), nullable=False)
     email = Column(String(255), nullable=False)
+    username = Column(String(255), nullable=True)
     project_type = Column(JSON)
     project_category = Column(String(50), nullable=False)
     content_link = Column(Text, nullable=False)
+    image = Column(String(255)),
     description = Column(String(255))
     created_at = Column(DateTime, default=datetime.utcnow)
 
@@ -54,4 +56,7 @@ class AccountShareModel(Base):
     account_id  = Column(String(100), nullable=False)
     account_password  = Column(String(100), nullable=False)
     sharer = Column(String(255), nullable=False)
-    username = Column(String(100))
+    sharername = Column(String(255), nullable=False)
+    username = Column(JSON)
+    image = Column(String(255)),
+    description = Column(String(255))
