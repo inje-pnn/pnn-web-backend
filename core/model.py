@@ -45,7 +45,7 @@ class StudyPostModel(Base):
     project_type = Column(JSON)
     project_category = Column(String(50), nullable=False)
     content_link = Column(Text, nullable=False)
-    image = Column(String(255)),
+    image = Column(String(255))
     description = Column(String(255))
     created_at = Column(DateTime, default=datetime.utcnow)
 
