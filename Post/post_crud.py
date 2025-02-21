@@ -37,6 +37,7 @@ class studyPostCRUD:
         if post:
             await self._session.delete(post)
             await self._session.commit()
+    
             
 
 class AccountPostCRUD:

@@ -71,7 +71,7 @@ async def delete_accountboard(serial_number: int, db: AsyncSession = Depends(pro
     await crud.delete_accountboard(serial_number)
     return {"message": "Post deleted successfully"}
 
-@router.post("/update_accountboard")
+@router.fetch("/update_accountboard")
 async def update_accountboard(UDTO: updateDTO, db: AsyncSession = Depends(provide_session)):
     crud = AccountPostCRUD(db)
     
