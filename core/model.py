@@ -59,5 +59,6 @@ class AccountShareModel(Base):
     sharer = Column(String(255), nullable=False)
     sharername = Column(String(255), nullable=False)
     username = Column(JSON)
+    content_link = Column(Text, nullable=False)
     image = Column(String(255)),
     description = Column(String(255))

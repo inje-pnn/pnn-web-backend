@@ -52,6 +52,7 @@ class AccountPostCRUD:
                              sharername = sharername,
                              image = payload.image,
                              username=payload.username,
+                             content_link=payload.content_link,
                              description=payload.description
                              )
         self._session.add(new_post)

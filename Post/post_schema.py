@@ -18,6 +18,7 @@ class AccountPostDTO(BaseModel):
     account_password: str
     sharer: str
     username: List[str]
+    content_link: str
     description: str
     image: str
 
