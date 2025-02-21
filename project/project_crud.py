@@ -30,7 +30,7 @@ class ProjectCrud:
         
         async with self.session as session:  # 비동기 세션 사용
             # 비동기 쿼리 작성
-            query = select(ProjectModel).order_by(ProjectModel.id.desc())
+            query = select(ProjectModel).order_by(ProjectModel.create_data.desc())
             
             # 쿼리 실행
             result = await session.execute(query)
