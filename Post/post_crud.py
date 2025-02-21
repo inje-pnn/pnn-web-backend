@@ -45,7 +45,8 @@ class AccountPostCRUD:
         self._session = session
 
     async def create_Accountboard(self,*,sharername, payload:AccountPostDTO):
-        new_post = AccountShareModel(account_id=payload.account_id, 
+        new_post = AccountShareModel(title = payload.title,
+                             account_id=payload.account_id, 
                              account_password=payload.account_password,
                              sharer=payload.sharer,
                              sharername = sharername,

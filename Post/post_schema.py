@@ -13,6 +13,7 @@ class studyPostDTO(BaseModel):
 
 class AccountPostDTO(BaseModel):
 
+    title: str
     account_id: str
     account_password: str
     sharer: str

@@ -53,6 +53,7 @@ class AccountShareModel(Base):
     __tablename__ = "accountshareboard"
 
     serial_number = Column(Integer, primary_key=True, autoincrement=True)
+    title = Column(String(255), nullable=False)
     account_id  = Column(String(100), nullable=False)
     account_password  = Column(String(100), nullable=False)
     sharer = Column(String(255), nullable=False)
