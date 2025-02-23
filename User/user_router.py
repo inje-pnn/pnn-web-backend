@@ -28,6 +28,7 @@ async def login_user(payload: FirebaseAuthRequest, session: AsyncSession = Depen
             "student_grade": user.student_grade,
             "github_url": user.github_url,
             "authority": user.authority,
+            "profile_image": user.image_url,
         }
 
     # 기본값 설정
@@ -35,6 +36,7 @@ async def login_user(payload: FirebaseAuthRequest, session: AsyncSession = Depen
     student_number = "0"
     student_grade = 0
     github_url = "https://github.com"
+    image_url = None
 
     # 사용자 추가
     new_user = await user_repo.create(
@@ -45,6 +47,7 @@ async def login_user(payload: FirebaseAuthRequest, session: AsyncSession = Depen
             student_grade=student_grade,
             github_url=github_url,
             authority=2,
+            image_url=image_url
         )
     )
 
@@ -56,6 +59,7 @@ async def login_user(payload: FirebaseAuthRequest, session: AsyncSession = Depen
         "student_grade": new_user.student_grade,
         "github_url": new_user.github_url,
         "authority": new_user.authority,
+        "image_url": new_user.image_url,
     }
 
 from fastapi import Body  # Body를 사용하여 요청에서 권한 값을 받음
@@ -97,6 +101,7 @@ async def get_all_members(session: AsyncSession = Depends(provide_session)):
             "student_grade": user.student_grade,
             "github_url": user.github_url,
             "authority": user.authority,
+            "image_url": user.image_url,
         }
         for user in users
     ]
@@ -109,6 +114,7 @@ async def update_user_info(
     student_number: str = Body(None, description="New student number"),
     student_grade: int = Body(None, description="New student grade"),
     github_url: str = Body(None, description="New GitHub URL"),
+    image_url: str = Body(None, description="New profile image URL"),
     session: AsyncSession = Depends(provide_session),
 ):
     user_repo = UserRepository(session)
@@ -128,6 +134,8 @@ async def update_user_info(
         user.student_grade = student_grade
     if github_url is not None:
         user.github_url = github_url
+    if image_url is not None:
+        user.image_url = image_url
 
     await session.commit()
 
@@ -138,6 +146,7 @@ async def update_user_info(
         "student_number": user.student_number,
         "student_grade": user.student_grade,
         "github_url": user.github_url,
+        "image_url": user.image_url,
         "authority": user.authority,
         "message": "User information updated successfully."
     }

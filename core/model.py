@@ -14,6 +14,7 @@ class UserModel(Base):
     name = Column(String(255), nullable=True)
     github_url = Column(String(255), nullable=True)
     authority = Column(Integer, nullable=False, default=3)
+    image_url = Column(String(500), nullable=True)
 
     project = relationship("ProjectModel", back_populates="user")
 
